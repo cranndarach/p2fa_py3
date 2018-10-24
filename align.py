@@ -6,10 +6,10 @@
       	-r sampling_rate -- override which sample rate model to use, one of 8000, 11025, and 16000
         -s start_time    -- start of portion of wavfile to align (in seconds, default 0)
         -e end_time      -- end of portion of wavfile to align (in seconds, defaul to end)
-			
+
 	You can also import this file as a module and use the functions directly.
 
-	2018-02-22 JK, This file was modified for Python3.x 
+	2018-02-22 JK, This file was modified for Python3.x
 """
 
 import os
@@ -47,8 +47,13 @@ def prep_wav(orig_wav, out_wav, sr_override, wave_start, wave_end):
         print("Resampling wav file from " + str(SR) +
               " to " + str(new_sr) + soxopts + "...")
         SR = new_sr
+        # os.system("sox " + orig_wav + " -r " + str(SR) +
+        #           " " + out_wav + " polyphase" + soxopts)
+        print(orig_wav)
         os.system("sox " + orig_wav + " -r " + str(SR) +
-                  " " + out_wav + " polyphase" + soxopts)
+                  " " + out_wav + soxopts)
+        # os.system("sox -r " + str(SR) + " "+ orig_wav + " " + out_wav +
+        #           " polyphase " + soxopts)
     else:
         # print("Using wav file, already at sampling rate " + str(SR) + ".")
         os.system("cp -f " + orig_wav + " " + out_wav)
@@ -257,7 +262,6 @@ def getopt2(name, opts, default=None):
 
 
 if __name__ == '__main__':
-
     try:
         opts, args = getopt.getopt(sys.argv[1:], "r:s:e:", ["model="])
 
@@ -341,4 +345,3 @@ if __name__ == '__main__':
 
     # clean directory
     delete_working_directory()
-    
